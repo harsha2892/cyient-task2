@@ -17,15 +17,15 @@ jobs:
       - run:
           name: Test
           command: mvn test
-  docker/publish:
-    docker-password: DOCKER_PASSWORD 
-    docker-username: DOCKER_LOGIN 
-    image: harsha2893/spring-petclinic 
-    lint-dockerfile: true 
-    dockerfile: Dockerfile 
+
 
 workflows:
   petclinic:
     jobs:
       - build-and-test
-      - docker/publish
+      - docker/publish:
+            docker-password: DOCKER_PASSWORD 
+            docker-username: DOCKER_LOGIN 
+            image: cimg/default 
+            lint-dockerfile: true 
+            dockerfile: Dockerfile
