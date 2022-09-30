@@ -26,6 +26,6 @@ workflows:
       - docker/publish:
             docker-password: DOCKER_PASSWORD 
             docker-username: DOCKER_LOGIN 
-            image: cimg/default 
+            image: docker:17.05.0-ce-git 
             lint-dockerfile: true 
             dockerfile: Dockerfile
