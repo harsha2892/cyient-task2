@@ -22,8 +22,8 @@ jobs:
     steps:
       - docker/build:
           image: petclinic 
-          treat-warnings-as-errors: false 
-          lint-dockerfile: true
+          # treat-warnings-as-errors: false 
+          # lint-dockerfile: true
   docker-check:
     docker:
       - image: cimg/base:stable
