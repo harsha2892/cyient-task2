@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   docker: circleci/docker@1.7.0
-
 jobs:
   # Below is the job to build and test a Spring Boot App for Demo purpose.
   build-and-test:
@@ -17,15 +16,34 @@ jobs:
       - run:
           name: Test
           command: mvn test
-
+  docker-build:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - docker/build:
+          image: petclinic 
+          treat-warnings-as-errors: true 
+          lint-dockerfile: true
+  docker-check:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - docker/check:
+          docker-password: DOCKER_PASSWORD 
+          docker-username: DOCKER_LOGIN
+  docker-push:
+    docker:
+      # replace with your preferred image
+      - image: cimg/base:stable
+    steps:
+      - docker/push:
+          image: petclinic 
 
 workflows:
   petclinic:
     jobs:
       - build-and-test
-      - docker/publish:
-            docker-password: DOCKER_PASSWORD 
-            docker-username: DOCKER_LOGIN 
-            image: docker:17.05.0-ce-git 
-            lint-dockerfile: true 
-            dockerfile: Dockerfile
+      - docker-build
+      - docker-check:
+          context: dockerhub
+      - docker-push
