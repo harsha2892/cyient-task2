@@ -24,8 +24,7 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run: docker build . 
-          # treat-warnings-as-errors: false 
-          # lint-dockerfile: true
+
   docker-check:
     docker:
       - image: cimg/base:stable
@@ -39,6 +38,10 @@ workflows:
   petclinic:
     jobs:
       - build-and-test
-      - docker-build
+      - docker-build:
+          requires:
+            - build-and-test
       - docker-check:
           context: dockerhub
+          requires:
+            - docker-build
